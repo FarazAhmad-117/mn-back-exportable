@@ -5,6 +5,7 @@ import { deleteImage } from "../utils/deleteImage.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { Category } from "../models/category.model.js";
 import { SubCategory } from "../models/subcategory.model.js";
+import { imagePathToUrl } from "../utils/ImageHelpers.js";
 
 
 
@@ -47,8 +48,9 @@ export const createProduct = asyncHandler(async(req,res)=>{
     // Getting Image Urls from images
     // const imagePaths = Array.from(req.files?.images?.map(img=>img.path));
     const imagePaths = req.files.images?.map(img => {
-        const imagePath = img.path.replace('public\\', ''); 
-        return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
+        return imagePathToUrl(img.path);
+        // const imagePath = img.path.replace('public', ''); 
+        // return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
     });
     const deleteLocalImages = ()=>{
         imagePaths?.map(m=>{
@@ -133,8 +135,9 @@ export const updateProduct = asyncHandler(async(req,res)=>{
     // Getting Image Urls from images
     // const imagePaths = Array.from(req.files?.images?.map(img=>img.path));
     const imagePaths = req.files.images?.map(img => {
-        const imagePath = img.path.replace('public\\', ''); 
-        return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
+        return imagePathToUrl(img.path);
+        // const imagePath = img.path.replace('public', ''); 
+        // return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
     });
     const deleteLocalImages = ()=>{
         imagePaths?.map(m=>{
@@ -356,8 +359,9 @@ export const createProductVariation = asyncHandler(async(req,res)=>{
 
     // const imagePaths = Array.from(req.files?.map(img=>img.path));
     const imagePaths = req.files.images?.map(img => {
-        const imagePath = img.path.replace('public\\', ''); 
-        return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
+        return imagePathToUrl(img.path);
+        // const imagePath = img.path.replace('public\\', ''); 
+        // return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
     });
     const deleteLocalImages = ()=>{
         imagePaths?.map(m=>{

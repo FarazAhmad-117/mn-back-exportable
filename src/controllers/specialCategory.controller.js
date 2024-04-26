@@ -2,15 +2,16 @@ import { Category, SpecialCategory } from "../models/category.model.js";
 import { Product } from "../models/product.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import { deleteImagefromLocalPath } from "../utils/ImageHelpers.js";
+import { deleteImagefromLocalPath, imagePathToUrl } from "../utils/ImageHelpers.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { deleteImage } from "../utils/deleteImage.js";
 
 export const createSpecialCategory = asyncHandler(async(req,res)=>{
     const { name,slug, description, isActive = false } = req.body;
     let image = "";
-    const imagePath = req.files?.image[0].path.replace('public\\', '');
-    image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
+    image = imagePathToUrl(req.files?.image[0].path);
+    // const imagePath = req.files?.image[0].path.replace('public', '');
+    // image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`; 
     
     if ([name,description,slug].some(field=>field?.trim() === "") ,!name || !description || !slug) {
         deleteImage(req.files?.image[0].path);
@@ -65,8 +66,9 @@ export const updatecategory = asyncHandler(async(req,res)=>{
     const { id , name, slug, description, isActive,imageUrl } = req.body;
     let image = "";
     if(req.files?.image && req.files?.image[0]){
-        const imagePath = req.files?.image[0].path.replace('public\\', '');
-        image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
+        image = imagePathToUrl(req.files?.image[0].path);
+        // const imagePath = req.files?.image[0].path.replace('public', '');
+        // image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
     }
 
     if ([id,name,description,slug].some(field=>field?.trim() === "") ,!name || !description || !slug || !id) {

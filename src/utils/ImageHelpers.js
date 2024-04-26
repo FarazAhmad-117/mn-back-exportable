@@ -20,6 +20,11 @@ export const deleteImagefromLocalPath = (imageUrl) => {
     });
 };
 
+export const imagePathToUrl=(imagePath)=>{
+    const imageUrl = imagePath.replace('public', '');
+    return `${process.env.SERVER_URI}/${imageUrl.replace(/\\/g, '/')}`; 
+}
+
 export const findImagesInFolder = (folderPath ='public/pictures') => {
     const imagePaths = [];
 

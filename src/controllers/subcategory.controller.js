@@ -2,6 +2,7 @@ import { Category } from "../models/category.model.js";
 import { SubCategory } from "../models/subcategory.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { imagePathToUrl } from "../utils/ImageHelpers.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { deleteImage } from "../utils/deleteImage.js";
 
@@ -14,8 +15,9 @@ export const createSubCategory = asyncHandler(async (req, res) => {
     // Extract necessary fields from the request body
     const { name,slug, description,categoryId, isActive = true } = req.body;
     let image = "";
-    const imagePath = req.files?.image[0].path.replace('public\\', '');
-    image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
+    image = imagePathToUrl(req.files?.image[0].path);
+    // const imagePath = req.files?.image[0].path.replace('public', '');
+    // image = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
 
     // Perform validation checks
     if ([name,description,slug].some(field=>field?.trim() === "") ,!name || !description || !slug) {
@@ -66,8 +68,9 @@ export const updateSubCategory = asyncHandler(async(req,res)=>{
     const {id,name,slug, description,categorySlug, isActive,imageUrl} = req.body;
     let img = "";
     if(req.files?.image && req.files?.image[0]){
-        const imagePath = req.files?.image[0].path.replace('public\\', '');
-        img = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
+        img = imagePathToUrl(req.files?.image[0].path);
+        // const imagePath = req.files?.image[0].path.replace('public', '');
+        // img = `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/')}`;
     }
 
     // Perform validation checks
