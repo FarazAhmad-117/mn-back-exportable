@@ -37,7 +37,7 @@ export const findImagesInFolder = (folderPath ='public/pictures') => {
             imagePaths.push(...findImagesInFolder(filePath));
         } else {
             const extname = path.extname(file).toLowerCase();
-            if (extname === '.jpg' || extname === '.jpeg' || extname === '.png' || extname === '.gif' || extname === '.bmp') {
+            if (extname === '.jpg' || extname === '.jpeg' || extname === '.png' || extname === '.gif' || extname === '.bmp' || extname === ".webp") {
                 imagePaths.push(filePath);
             }
         }
@@ -47,8 +47,9 @@ export const findImagesInFolder = (folderPath ='public/pictures') => {
 };
 
 export const makeUrlFromImagePath = (img) =>{
-    const imagePath = img.replace('public\\', ''); 
-    return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/').split(' ').map(encodeURIComponent).join('%20')}`; 
+    return imagePathToUrl(img);
+    // const imagePath = img.replace('public\\', ''); 
+    // return `${process.env.SERVER_URI}/${imagePath.replace(/\\/g, '/').split(' ').map(encodeURIComponent).join('%20')}`; 
 }
 
 
